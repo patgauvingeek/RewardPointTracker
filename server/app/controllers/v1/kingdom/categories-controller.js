@@ -5,9 +5,7 @@ function CategoriesController() {
 
 function get(req, res, next) {
   var db = new sqlite3.Database('./people.db');
-  let sql = `SELECT * FROM categories
-             ORDER BY name`;
-  db.all(sql, [], (err, rows) => {
+  db.all("SELECT * FROM categories ORDER BY name", (err, rows) => {
     if (err) {
       throw err;
     }
