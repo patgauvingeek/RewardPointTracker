@@ -17,7 +17,7 @@ function applyMigrationFrom(db, index)
   fs.readFile(migrations[index], 'utf8', function(err, content) { 
     if (err)
       return console.error(err.message);
-    db.run(content, err => {
+    db.exec(content, err => {
       if (err)
         return console.error(err.message);
       console.log("Done.")

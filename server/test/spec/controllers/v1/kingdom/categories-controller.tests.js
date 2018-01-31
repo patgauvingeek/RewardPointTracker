@@ -1,7 +1,7 @@
 
-describe('PeoplesController Tests', function() {
+describe('CategoriesController Tests', function() {
 
-  var peoplesController;
+  var categoriesController;
   var req;
   var res;
   var next;
@@ -12,25 +12,25 @@ describe('PeoplesController Tests', function() {
 
     sinon.spy(res, "status");
 
-    peoplesController = require('../../../../../app/controllers/v1/kingdom/peoples-controller');
+    categoriesController = require('../../../../../app/controllers/v1/kingdom/categories-controller');
   });
 
-  describe('get()', function() {
+  describe('put()', function() {
 
     it('should be a function', function(done) {
-      expect(peoplesController.get).to.be.a('function');
+      expect(categoriesController.put).to.be.a('function');
       done();
     });
 
     it('should call res.status() one time', function(done) {
-      peoplesController.get(req, res, next);
+      categoriesController.put(req, res, next);
 
       expect(res.status.callCount).to.equal(1);
       done();
     });
 
     it('should call res.status() with 200', function(done) {
-        peoplesController.get(req, res, next);
+        categoriesController.put(req, res, next);
 
       expect(res.status.calledWith(200)).to.equal(true);
       done();

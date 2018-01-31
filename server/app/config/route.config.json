@@ -4,6 +4,21 @@
       "route": "/v1/people",
       "method": "GET",
       "controller": "../controllers/v1/kingdom/people-controller"
+    },
+    {
+      "route": "/v1/categories",
+      "method": "GET",
+      "controller": "../controllers/v1/kingdom/categories-controller"
+    },
+    {
+      "route": "/v1/categories",
+      "method": "PUT",
+      "controller": "../controllers/v1/kingdom/categories-controller"
+    },
+    {
+      "route": "/v1/categories/:id",
+      "method": "PUT",
+      "controller": "../controllers/v1/kingdom/categories-controller"
     }
   ]
 }
