@@ -18,7 +18,9 @@ function put(req, res, next) {
   var db = new sqlite3.Database('./people.db');
   if (req.params.id === undefined)
   {
-    // insert one row into the langs table
+    //
+    // insert
+    //
     db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err, rows) {
       if (err) {
         throw err;
@@ -33,6 +35,9 @@ function put(req, res, next) {
     });
     return;  
   }
+  //
+  // update
+  //
   db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err, rows) {
     if (err) {
       throw err;
