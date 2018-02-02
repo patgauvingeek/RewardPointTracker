@@ -7,7 +7,7 @@ CREATE TABLE titles (
   category_id INTEGER,
   male_title TEXT,
   female_title TEXT,
-  cost INTEGER UNIQUE,
+  cost INTEGER,
   FOREIGN KEY(category_id) REFERENCES categories(id));
 CREATE TABLE people ( 
   id INTEGER PRIMARY KEY AUTOINCREMENT,

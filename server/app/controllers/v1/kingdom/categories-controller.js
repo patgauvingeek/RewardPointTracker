@@ -17,6 +17,11 @@ function query(req, res, db, id)
     if (err) {
       throw err;
     }
+    if (row_rows === undefined)
+    {
+      res.status(404).json({ message: "not found" });
+      return;
+    }
     res.status(200).json(row_rows);
     db.close();
   });
@@ -37,7 +42,7 @@ function put(req, res) {
     //
     // insert
     //
-    db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err, rows) {
+    db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err) {
       if (err) {
         throw err;
       }
@@ -48,7 +53,7 @@ function put(req, res) {
   //
   // update
   //
-  db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err, rows) {
+  db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err) {
     if (err) {
       throw err;
     }
@@ -61,11 +66,12 @@ function put(req, res) {
 //
 function remove(req, res) {
   var db = new sqlite3.Database('./people.db');
-  db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err, rows) {
+  db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err) {
     if (err) {
       throw err;
     }
-    res.status(200).json(true);
+    res.status(200).json(undefined);
+    db.close();
   });
 }
 
