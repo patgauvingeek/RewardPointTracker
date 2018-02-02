@@ -3,18 +3,31 @@ var sqlite3 = require('sqlite3').verbose();
 function CategoriesController() {
 }
 
+function query(req, res, db, id)
+{
+  var sql = "SELECT * FROM categories";
+  if (id === undefined) {
+    sql += ";"
+    db.queryMethod = db.all;
+  } else {
+    sql += " WHERE id = " + id + ";";
+    db.queryMethod = db.get;
+  }
+  db.queryMethod(sql, function(err, row_rows) {
+    if (err) {
+      throw err;
+    }
+    res.status(200).json(row_rows);
+    db.close();
+  });
+}
+
 //
 // Get all
 //
 function get(req, res) {
   var db = new sqlite3.Database('./people.db');
-  db.all("SELECT * FROM categories ORDER BY name", (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(rows);
-    db.close();
-  });  
+  query(req, res, db);
 }
 
 function put(req, res) {
@@ -28,13 +41,7 @@ function put(req, res) {
       if (err) {
         throw err;
       }
-      db.get("SELECT * FROM categories WHERE id = (select last_insert_rowid());", function(err, row) {
-        if (err) {
-          throw err;
-        }
-        res.status(200).json(row);
-      });
-      
+      query(req, res, db, "(select last_insert_rowid())");      
     });
     return;  
   }
@@ -45,12 +52,7 @@ function put(req, res) {
     if (err) {
       throw err;
     }
-    db.get("SELECT * FROM categories WHERE id = ?;", [req.params.id], function(err, row) {
-      if (err) {
-        throw err;
-      }
-      res.status(200).json(row);
-    });
+    query(req, res, db, req.params.id);
   });
 }
 
