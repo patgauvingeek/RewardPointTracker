@@ -19,6 +19,11 @@
       "route": "/v1/categories/:id",
       "method": "PUT",
       "controller": "../controllers/v1/kingdom/categories-controller"
+    },
+    {
+      "route": "/v1/categories/:id",
+      "method": "DELETE",
+      "controller": "../controllers/v1/kingdom/categories-controller"
     }
   ]
 }

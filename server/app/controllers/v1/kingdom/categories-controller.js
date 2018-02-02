@@ -3,7 +3,10 @@ var sqlite3 = require('sqlite3').verbose();
 function CategoriesController() {
 }
 
-function get(req, res, next) {
+//
+// Get all
+//
+function get(req, res) {
   var db = new sqlite3.Database('./people.db');
   db.all("SELECT * FROM categories ORDER BY name", (err, rows) => {
     if (err) {
@@ -14,7 +17,7 @@ function get(req, res, next) {
   });  
 }
 
-function put(req, res, next) {
+function put(req, res) {
   var db = new sqlite3.Database('./people.db');
   if (req.params.id === undefined)
   {
@@ -51,9 +54,23 @@ function put(req, res, next) {
   });
 }
 
+//
+// DELETE
+//
+function remove(req, res) {
+  var db = new sqlite3.Database('./people.db');
+  db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err, rows) {
+    if (err) {
+      throw err;
+    }
+    res.status(200).json(true);
+  });
+}
+
 CategoriesController.prototype = {
   get: get,
-  put: put
+  put: put,
+  delete: remove
 };
 
 var categoriesController = new CategoriesController();
