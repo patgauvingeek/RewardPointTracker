@@ -14,6 +14,10 @@ CREATE TABLE people (
   name TEXT,
   sex INTEGER,
   category_id INTEGER,
-  point INTEGER,
   FOREIGN KEY(category_id) REFERENCES categories(id));
+CREATE TABLE rewards (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  person_id INTEGER,
+  datetime datetime default current_timestamp,
+  FOREIGN KEY(person_id) REFERENCES people(id));
 COMMIT;
