@@ -59,6 +59,16 @@
       "route": "/v1/titles/:id",
       "method": "DELETE",
       "controller": "../controllers/v1/kingdom/titles-controller"
+    },
+    {
+      "route": "/v1/people/:id/rewards",
+      "method": "GET",
+      "controller": "../controllers/v1/kingdom/rewards-controller"
+    },
+    {
+      "route": "/v1/people/:id/rewards",
+      "method": "PUT",
+      "controller": "../controllers/v1/kingdom/rewards-controller"
     }
   ]
 }
