@@ -15,4 +15,4 @@ SELECT name,
                                 GROUP BY person_id)
     GROUP BY titles.category_id)) as title
 FROM people
-ORDER BY people.id;
+ORDER BY people.name;
