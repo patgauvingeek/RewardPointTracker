@@ -6,6 +6,21 @@
       "controller": "../controllers/v1/kingdom/people-controller"
     },
     {
+      "route": "/v1/people",
+      "method": "PUT",
+      "controller": "../controllers/v1/kingdom/people-controller"
+    },
+    {
+      "route": "/v1/people/:id",
+      "method": "PUT",
+      "controller": "../controllers/v1/kingdom/people-controller"
+    },
+    {
+      "route": "/v1/people/:id",
+      "method": "DELETE",
+      "controller": "../controllers/v1/kingdom/people-controller"
+    },
+    {
       "route": "/v1/categories",
       "method": "GET",
       "controller": "../controllers/v1/kingdom/categories-controller"
