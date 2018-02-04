@@ -22,7 +22,6 @@ function get(req, res, next) {
 
 function put(req, res) {
   var db = new sqlite3.Database('./people.db');
-  console.log(req);
   db.run("INSERT INTO rewards (people_id) VALUES(?);", [req.params.id], function(err) {
     if (err) {
       throw err;
