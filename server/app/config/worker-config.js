@@ -17,6 +17,8 @@ function configureApplication(application) {
 
   application.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", " http://localhost:9001");
+    res.header("Access-Control-Allow-Methods", "GET, PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');

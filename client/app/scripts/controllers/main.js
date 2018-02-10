@@ -20,13 +20,14 @@ angular.module('clientApp')
 
     $scope.selectPeople = function(people)
     {
+      $scope.selectedPeople = people;
       $http.get('http://localhost:9000/v1/people/' + people.id + '/rewards')
         .then(function(response) {
           var items = [];
           var len = response.data.length;
           for (var i = 0; i < len; i++)
           {
-            items.push({start: new Date(response.data[i]) });
+            items.push({start: new Date(response.data[i] + " UTC") });
           }
           $scope.rewards.splice(0,$scope.rewards.length);
           $scope.rewards.push(items);
@@ -35,6 +36,18 @@ angular.module('clientApp')
     
     $scope.uiConfig = {
       calendar:{
+        dayClick: function( date, jsEvent, view ) {
+          // The date is good but in the wrong timezone (UTC). This convert the timezone to the local timezone.
+          var dateFixedTimezone = moment(date.format("YYYY-MM-DD HH:mm:SS"));
+          var data = {
+            datetime: dateFixedTimezone.tz("UTC").format("YYYY-MM-DD HH:mm:SS")
+          };
+          $http.put('http://localhost:9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
+            .then(function(response)
+            {
+              $scope.selectPeople($scope.selectedPeople);
+            });
+        },
         eventRender: $scope.eventRender
       }
     };
