@@ -22,7 +22,14 @@ function get(req, res, next) {
 
 function put(req, res) {
   var db = new sqlite3.Database('./people.db');
-  db.run("INSERT INTO rewards (people_id) VALUES(?);", [req.params.id], function(err) {
+
+  var sql = "INSERT INTO rewards (people_id) VALUES(?);"
+  if (req.body.datetime !== undefined)
+  {
+    var sql = "INSERT INTO rewards (people_id, datetime) VALUES(?, \"" + req.body.datetime + "\");";
+  }
+
+  db.run(sql, [req.params.id], function(err) {
     if (err) {
       throw err;
     }
