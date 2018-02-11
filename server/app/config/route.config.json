@@ -41,22 +41,22 @@
       "controller": "../controllers/v1/kingdom/categories-controller"
     },
     {
-      "route": "/v1/titles",
+      "route": "/v1/categories/:category_id/titles",
       "method": "GET",
       "controller": "../controllers/v1/kingdom/titles-controller"
     },
     {
-      "route": "/v1/titles",
+      "route": "/v1/categories/:category_id/titles",
       "method": "PUT",
       "controller": "../controllers/v1/kingdom/titles-controller"
     },
     {
-      "route": "/v1/titles/:id",
+      "route": "/v1/categories/:category_id/titles/:id",
       "method": "PUT",
       "controller": "../controllers/v1/kingdom/titles-controller"
     },
     {
-      "route": "/v1/titles/:id",
+      "route": "/v1/categories/:category_id/titles/:id",
       "method": "DELETE",
       "controller": "../controllers/v1/kingdom/titles-controller"
     },

@@ -7,7 +7,7 @@ function query(req, res, db, id)
 {
   var sql = "SELECT * FROM categories";
   if (id === undefined) {
-    sql += ";"
+    sql += " ORDER BY name;"
     db.queryMethod = db.all;
   } else {
     sql += " WHERE id = " + id + ";";

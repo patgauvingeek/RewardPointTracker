@@ -5,15 +5,14 @@ function TitlesController() {
 
 function query(req, res, db, id)
 {
-  var sql =  `SELECT titles.id, category_id, categories.name AS category,
-                male_title, female_title, cost
-              FROM titles
-              LEFT JOIN categories on categories.id = titles.category_id`;
+  var sql =  `SELECT *
+              FROM titles`;
   if (id === undefined) {
-    sql += ` ORDER BY category, cost;`;
+    sql += " WHERE category_id = " + req.params.category_id + 
+           " ORDER BY cost;";
     db.queryMethod = db.all;
   } else {
-    sql += " WHERE titles.id = " + id + ";";
+    sql += " WHERE id = " + id + ";";
     db.queryMethod = db.get;
   }
   db.queryMethod(sql, function(err, row_rows) {
@@ -39,7 +38,7 @@ function put(req, res, next) {
   var db = new sqlite3.Database('./people.db');
 
   let sql_param = [
-    req.body.category_id, 
+    req.params.category_id,
     req.body.male_title, req.body.female_title,
     req.body.cost
   ]
