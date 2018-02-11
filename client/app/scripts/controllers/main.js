@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', function ($scope, $http, $mdDialog) {
     
     $scope.people = [];
     $scope.rewards = [];
@@ -45,9 +45,17 @@ angular.module('clientApp')
           $http.put('http://localhost:9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
             .then(function(response)
             {
+              var newTitleEarned = $scope.selectedPeople.title != response.data.title;
               var index = $scope.people.findIndex(function(p) { return p.id == $scope.selectedPeople.id; });
-              $scope.people[index] = response.data;
+              if (index > -1)
+              {
+                $scope.people[index] = response.data;
+              }
               $scope.selectPeople(response.data);
+              if (newTitleEarned)
+              {
+                $scope.showNewTitleDialog($scope.selectedPeople)
+              } 
             });
         },
         eventRender: $scope.eventRender
@@ -62,5 +70,16 @@ angular.module('clientApp')
           $scope.selectPeople($scope.people[0]);
         }
       });
+
+      $scope.showNewTitleDialog = function(people) {
+        $mdDialog.show(
+          $mdDialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title("Nouveau Titre !")
+            .textContent(people.name + " est maintenant " + people.title + ".")
+            .ok('Continuer')
+        );
+      };
       
   });
