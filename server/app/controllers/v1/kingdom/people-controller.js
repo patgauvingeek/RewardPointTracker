@@ -118,6 +118,7 @@ function remove(req, res) {
 }
 
 PeopleController.prototype = {
+  query: query,
   get: get,
   put: put,
   delete: remove

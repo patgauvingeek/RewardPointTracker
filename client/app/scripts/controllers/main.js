@@ -45,7 +45,9 @@ angular.module('clientApp')
           $http.put('http://localhost:9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
             .then(function(response)
             {
-              $scope.selectPeople($scope.selectedPeople);
+              var index = $scope.people.findIndex(function(p) { return p.id == $scope.selectedPeople.id; });
+              $scope.people[index] = response.data;
+              $scope.selectPeople(response.data);
             });
         },
         eventRender: $scope.eventRender

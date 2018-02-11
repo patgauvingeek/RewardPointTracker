@@ -1,4 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
+var peopleController = require('./people-controller');
 
 function RewardsController() {
 }
@@ -33,23 +34,7 @@ function put(req, res) {
     if (err) {
       throw err;
     }
-    var sql =  `SELECT CASE WHEN (SELECT COUNT(*) AS points
-                                  FROM rewards
-                                  WHERE people_id = ?
-                                  GROUP BY people_id) IS NULL
-                        THEN 0
-                        ELSE (SELECT COUNT(*)
-                              FROM rewards
-                              WHERE people_id = ?
-                              GROUP BY people_id)
-                        END AS points;`;
-    db.get(sql, [req.params.id, req.params.id], function(err, row) {
-      if (err) {
-        throw err;
-      }
-      res.status(200).json(row.points);
-      db.close();
-    });      
+    new peopleController.query(req, res, db, req.params.id);      
   });
 }
 
