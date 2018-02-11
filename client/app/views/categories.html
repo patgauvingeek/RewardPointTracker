@@ -1,0 +1,9 @@
+<md-content>
+    <md-tabs md-dynamic-height="" md-border-bottom="">
+      <md-tab label="{{c.name}}" ng-repeat="c in categories" ng-click="selectCategory(c)">
+      </md-tab>
+    </md-tabs>
+  </md-content>
+  <ul>
+    <li ng-repeat="t in titles">{{t.male_title}} / {{t.female_title}}, {{t.cost}}</li>
+  </ul>
