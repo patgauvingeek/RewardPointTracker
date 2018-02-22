@@ -13,12 +13,23 @@ angular.module('clientApp')
     $scope.categories = [];
     $scope.titles = [];
 
+    $scope.newCategory = { name : "" };
+    $scope.newTitle = { male_title: "", female_title: "", cost: 0 };
+
     $scope.selectCategory = function(category)
     {
       $scope.selectedCategory = category;
       $http.get("http://localhost:9000/v1/categories/" + category.id + "/titles")
         .then(function(response) {
           $scope.titles = response.data;
+          $scope.newCategory = { name : "" };
+          $scope.newTitle = { 
+            male_title: "", 
+            female_title: "", 
+            cost: $scope.titles.length > 0
+              ? $scope.titles[$scope.titles.length-1].cost + 6
+              : 0
+          };
         });
     };
 
@@ -26,14 +37,23 @@ angular.module('clientApp')
     {
       $scope.selectedCategory = null;
       $scope.titles = [];
+      $scope.newCategory = { name : "" };
+      $scope.newTitle = { male_title: "", female_title: "", cost: 0 };
     };
 
-    $scope.addCategory = function(categoryName)
+    $scope.addCategory = function()
     {
-      var data = { name: categoryName };
-      $http.put('http://localhost:9000/v1/categories', data)
+      $http.put('http://localhost:9000/v1/categories', $scope.newCategory)
       .then(function(response) {
-        $scope.categories.push(response.data)
+        $scope.categories.push(response.data);
+      });  
+    }
+
+    $scope.addTitle = function()
+    {
+      $http.put('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id + '/titles', $scope.newTitle)
+      .then(function(response) {
+        $scope.selectCategory($scope.selectedCategory);
       });  
     }
 
