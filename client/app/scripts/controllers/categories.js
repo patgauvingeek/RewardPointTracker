@@ -22,6 +22,21 @@ angular.module('clientApp')
         });
     };
 
+    $scope.unselectCategory = function()
+    {
+      $scope.selectedCategory = null;
+      $scope.titles = [];
+    };
+
+    $scope.addCategory = function(categoryName)
+    {
+      var data = { name: categoryName };
+      $http.put('http://localhost:9000/v1/categories', data)
+      .then(function(response) {
+        $scope.categories.push(response.data)
+      });  
+    }
+
     $http.get('http://localhost:9000/v1/categories')
       .then(function(response) {
         $scope.categories = response.data;
