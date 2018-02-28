@@ -49,9 +49,10 @@ angular.module('clientApp')
               var index = $scope.people.findIndex(function(p) { return p.id == $scope.selectedPeople.id; });
               if (index > -1)
               {
-                $scope.people[index] = response.data;
+                $scope.people[index].title = response.data.title;
+                $scope.people[index].points = response.data.points;
+                $scope.selectPeople($scope.people[index]);
               }
-              $scope.selectPeople(response.data);
               if (newTitleEarned)
               {
                 $scope.showNewTitleDialog($scope.selectedPeople)
@@ -81,5 +82,7 @@ angular.module('clientApp')
             .ok('Continuer')
         );
       };
+
+      $scope.now = function() { return moment().format('DD/MM/YYYY'); }
       
   });
