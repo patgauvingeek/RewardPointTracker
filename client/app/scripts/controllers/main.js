@@ -83,6 +83,15 @@ angular.module('clientApp')
         );
       };
 
-      $scope.now = function() { return moment().format('DD/MM/YYYY'); }
+      $scope.showCertificate = function(people) {
+        var wCertificateWindow = window.open("http://localhost:9001/certificat.html");
+        wCertificateWindow.onload = function () {
+          wCertificateWindow.document.getElementById("name").innerHTML = people.name;
+          wCertificateWindow.document.getElementById("title").innerHTML = people.title;
+          wCertificateWindow.document.getElementById("points").innerHTML = people.points;
+          wCertificateWindow.document.getElementById("date").innerHTML = moment().format('DD/MM/YYYY');
+        }
+      
+      }
       
   });
