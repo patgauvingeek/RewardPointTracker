@@ -16,7 +16,11 @@
               <td>{{t.male_title}}</td>
               <td>{{t.female_title}}</td>
               <td>{{t.cost}}</td>
-              <td></td>
+              <td>
+                <button type="button" class="btn btn-danger" ng-click="deleteTitle()">
+                  <div class="glyphicon glyphicon-remove"></div>
+                </button>
+              </td>
             </tr>
             <tr>
               <td class="col-xs-4"><input type="text" class="form-control input-dm" ng-model="newTitle.male_title"></input></td>
@@ -26,6 +30,11 @@
             </tr>
           </tbody>
         </table>
+        <div class="pull-right"> 
+          <button type="button" class="btn btn-danger" ng-click="deleteSelectedCategory()">
+            Supprimer la catégorie
+          </button>
+        </div>
       </md-tab-body>
     </md-tab>
     <md-tab ng-click="unselectCategory()">
