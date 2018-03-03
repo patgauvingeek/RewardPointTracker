@@ -63,6 +63,56 @@ angular.module('clientApp')
       }
     };
 
+    $scope.showNewTitleDialog = function(people) {
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title("Nouveau Titre !")
+          .textContent(people.name + " est maintenant " + people.title + ".")
+          .ok('Continuer')
+      );
+    };
+
+    $scope.showCertificate = function(people) {
+      var wCertificateWindow = window.open("http://localhost:9001/certificat.html");
+      wCertificateWindow.onload = function () {
+        wCertificateWindow.document.getElementById("name").innerHTML = people.name;
+        wCertificateWindow.document.getElementById("title").innerHTML = people.title;
+        wCertificateWindow.document.getElementById("points").innerHTML = people.points;
+        wCertificateWindow.document.getElementById("date").innerHTML = moment().format('DD/MM/YYYY');
+      }      
+    }
+
+    $scope.categories = [];
+    $scope.newPeople = {
+      name: "",
+      sex: "M",
+      category_id: -1
+    }
+    $scope.startAddNewPeople = function()
+    {
+      $scope.selectedPeople = null;
+      $scope.rewards.splice(0,$scope.rewards.length);
+      $scope.newPeople = {
+        name: "",
+        sex: "M",
+        category_id: -1
+      }
+      $http.get('http://localhost:9000/v1/categories')
+      .then(function(response) {
+        $scope.categories = response.data;
+      });
+    }
+    $scope.addPeople = function()
+    {      
+      $http.put('http://localhost:9000/v1/people', $scope.newPeople)
+      .then(function(response) {
+        $scope.people.push(response.data);
+        $scope.selectPeople(response.data);
+      });  
+    }
+
     $http.get('http://localhost:9000/v1/people')
       .then(function(response) {
         $scope.people = response.data;
@@ -71,27 +121,5 @@ angular.module('clientApp')
           $scope.selectPeople($scope.people[0]);
         }
       });
-
-      $scope.showNewTitleDialog = function(people) {
-        $mdDialog.show(
-          $mdDialog.alert()
-            .parent(angular.element(document.querySelector('#popupContainer')))
-            .clickOutsideToClose(true)
-            .title("Nouveau Titre !")
-            .textContent(people.name + " est maintenant " + people.title + ".")
-            .ok('Continuer')
-        );
-      };
-
-      $scope.showCertificate = function(people) {
-        var wCertificateWindow = window.open("http://localhost:9001/certificat.html");
-        wCertificateWindow.onload = function () {
-          wCertificateWindow.document.getElementById("name").innerHTML = people.name;
-          wCertificateWindow.document.getElementById("title").innerHTML = people.title;
-          wCertificateWindow.document.getElementById("points").innerHTML = people.points;
-          wCertificateWindow.document.getElementById("date").innerHTML = moment().format('DD/MM/YYYY');
-        }
-      
-      }
       
   });

@@ -2,12 +2,39 @@
   <md-tabs md-dynamic-height="" md-border-bottom="">
     <md-tab label="{{p.name}}" ng-repeat="p in people" ng-click="selectPeople(p)">
       <div>
-        <a href="#" ng-click="showCertificate(p)"><span>{{p.title}} <b>{{p.name}}</b></span></a>
-        <span class="pull-right">{{p.points}} points</span>
+        <a href="#" ng-click="showCertificate(p)"><span style="font-size:32px">{{p.title}} <b>{{p.name}}</b></span></a>
+        <span style="font-size:32px" class="pull-right">{{p.points}} points</span>
       </div>
+    </md-tab>
+    <md-tab ng-click="startAddNewPeople()">
+      <md-tab-label>
+        <div class="glyphicon glyphicon-plus"></div>
+      </md-tab-label>
+      <md-tab-body>
+        <div class="panel panel-default">
+          <div class="panel-heading">Nouvelle Personne</div>
+          <div class="panel-body form-group input-dm">
+            <label for="name">Nom</label>
+            <input id="name" type="text" ng-model="newPeople.name"></input>
+            <div class="form-check">
+              <input id="sexM" class="form-check-input" type="radio" ng-model="newPeople.sex" ng-value="'M'"></input>
+              <label class="form-check-label" for="sexM">Masculin</label>
+              <input id="sexF" class="form-check-input" type="radio" ng-model="newPeople.sex" ng-value="'F'"></input>
+              <label class="form-check-label" for="sexF">Féminin</label>
+            </div>
+            <label for="category">Catégorie</label>
+            <select id="category" name="category" ng-model="newPeople.category_id"
+                    ng-options="c.id as c.name for c in categories">
+            </select>
+          </div>
+          <div class="panel-footer">
+            <button type="button" class="btn btn-success" ng-click="addPeople()">Ajouter</button>
+          </div>
+        </div>
+      </md-tab-body>
     </md-tab>
   </md-tabs>
 </md-content>
 <div id="popupContainer">
-    <div ui-calendar="uiConfig.calendar" ng-model="rewards"></div>
+    <div ng-show="selectedPeople != null" ui-calendar="uiConfig.calendar" ng-model="rewards"></div>
 </div>
