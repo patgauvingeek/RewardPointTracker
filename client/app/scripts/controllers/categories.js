@@ -46,6 +46,7 @@ angular.module('clientApp')
       $http.put('http://localhost:9000/v1/categories', $scope.newCategory)
       .then(function(response) {
         $scope.categories.push(response.data);
+        $scope.selectCategory(response.data);
       });  
     }
 
