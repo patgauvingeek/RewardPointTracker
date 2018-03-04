@@ -1,12 +1,12 @@
 <md-content>
-  <md-tabs md-dynamic-height="" md-border-bottom="">
-    <md-tab label="{{p.name}}" ng-repeat="p in people" ng-click="selectPeople(p)">
+  <md-tabs md-selected="selectedPeopleIndex" md-dynamic-height="" md-border-bottom="">
+    <md-tab label="{{p.name}}" ng-repeat="p in people">
       <div>
         <a href="#" ng-click="showCertificate(p)"><span style="font-size:32px">{{p.title}} <b>{{p.name}}</b></span></a>
         <span style="font-size:32px" class="pull-right">{{p.points}} points</span>
       </div>
     </md-tab>
-    <md-tab ng-click="startAddNewPeople()">
+    <md-tab>
       <md-tab-label>
         <div class="glyphicon glyphicon-plus"></div>
       </md-tab-label>
@@ -35,11 +35,11 @@
     </md-tab>
   </md-tabs>
 </md-content>
-<div id="popupContainer">
-    <div ng-show="selectedPeople != null" ui-calendar="uiConfig.calendar" ng-model="rewards"></div>
-</div>
-<div class="pull-right" style="margin-top: 20px;"> 
-  <button type="button" class="btn btn-danger" ng-click="deleteSelectedPeople()">
-    Supprimer la personne
-  </button>
+<div id="popupContainer" ng-show="selectedPeople !== null">
+  <div ui-calendar="uiConfig.calendar" ng-model="rewards"></div>
+  <div class="pull-right" style="margin-top: 20px;"> 
+    <button type="button" class="btn btn-danger" ng-click="deleteSelectedPeople()">
+      Supprimer la personne
+    </button>
+  </div>
 </div>

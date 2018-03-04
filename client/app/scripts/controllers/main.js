@@ -18,9 +18,25 @@ angular.module('clientApp')
       element.html('<div class="text-center"><img width="48" src="images/medal.png"></div>');
     }
 
+    $scope.selectedPeopleIndex = 0;
+    $scope.$watch('selectedPeopleIndex', function(current, old)
+    {
+      $scope.selectPeopleByIndex(current);
+    });
+    $scope.selectPeopleByIndex = function(peopleIndex)
+    {
+      if (peopleIndex < 0 || peopleIndex > $scope.people.length - 1)
+      {
+        $scope.startAddNewPeople();
+        return;
+      }
+      $scope.selectPeople($scope.people[peopleIndex]);
+    }
     $scope.selectPeople = function(people)
     {
       $scope.selectedPeople = people;
+      // If the next request fail, the list will be empty.
+      $scope.rewards.splice(0,$scope.rewards.length);
       $http.get('http://localhost:9000/v1/people/' + people.id + '/rewards')
         .then(function(response) {
           var items = [];
@@ -29,9 +45,13 @@ angular.module('clientApp')
           {
             items.push({start: new Date(response.data[i] + " UTC") });
           }
-          $scope.rewards.splice(0,$scope.rewards.length);
           $scope.rewards.push(items);
         });
+    }
+    $scope.unselectPeople = function()
+    {
+      $scope.selectedPeople = null;
+      $scope.rewards.splice(0,$scope.rewards.length);
     }
     
     $scope.uiConfig = {
@@ -92,26 +112,48 @@ angular.module('clientApp')
     }
     $scope.startAddNewPeople = function()
     {
-      $scope.selectedPeople = null;
-      $scope.rewards.splice(0,$scope.rewards.length);
+      $scope.unselectPeople();
       $scope.newPeople = {
         name: "",
         sex: "M",
         category_id: -1
       }
       $http.get('http://localhost:9000/v1/categories')
-      .then(function(response) {
-        $scope.categories = response.data;
-      });
+        .then(function(response) {
+          $scope.categories = response.data;
+        });
     }
     $scope.addPeople = function()
     {      
       $http.put('http://localhost:9000/v1/people', $scope.newPeople)
-      .then(function(response) {
-        $scope.people.push(response.data);
-        $scope.selectPeople(response.data);
-      });  
+        .then(function(response) {
+          $scope.people.push(response.data);
+          $scope.selectPeople(response.data);
+        });  
     }
+
+    $scope.deleteSelectedPeople = function()
+    {
+      var dialog = $mdDialog.confirm()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(false)
+        .title("DANGER")
+        .textContent("Êtes-vous certain de vouloir supprimer " + $scope.selectedPeople.name + " et toutes ses récompenses ? ")
+        .ok("Oui")
+        .cancel("Non");
+      $mdDialog.show(dialog)
+        .then(function () {
+          $http.delete('http://localhost:9000/v1/people/' + $scope.selectedPeople.id)
+            .then(function(response) {
+              // remove selectedPeople from the list
+              const peopleToRemoveIndex = $scope.people.indexOf($scope.selectedPeople);
+              if (peopleToRemoveIndex !== -1) {
+                $scope.people.splice(peopleToRemoveIndex, 1);
+                $scope.selectPeopleByIndex(peopleToRemoveIndex);
+              }
+            })
+        }, function() {});
+    };
 
     $http.get('http://localhost:9000/v1/people')
       .then(function(response) {
