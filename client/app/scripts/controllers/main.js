@@ -104,7 +104,7 @@ angular.module('clientApp')
       }      
     }
 
-    $scope.categories = [];
+    $scope.titleCategories = [];
     $scope.newPeople = {
       name: "",
       sex: "M",
@@ -120,7 +120,7 @@ angular.module('clientApp')
       }
       $http.get('http://localhost:9000/v1/categories')
         .then(function(response) {
-          $scope.categories = response.data;
+          $scope.titleCategories = response.data;
         });
     }
     $scope.addPeople = function()
@@ -138,19 +138,15 @@ angular.module('clientApp')
         .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(false)
         .title("DANGER")
-        .textContent("Êtes-vous certain de vouloir supprimer " + $scope.selectedPeople.name + " et toutes ses récompenses ? ")
+        .textContent("Êtes-vous certain de vouloir supprimer " + $scope.selectedPeople.name + " et toutes ses récompenses ?")
         .ok("Oui")
         .cancel("Non");
       $mdDialog.show(dialog)
         .then(function () {
           $http.delete('http://localhost:9000/v1/people/' + $scope.selectedPeople.id)
             .then(function(response) {
-              // remove selectedPeople from the list
-              const peopleToRemoveIndex = $scope.people.indexOf($scope.selectedPeople);
-              if (peopleToRemoveIndex !== -1) {
-                $scope.people.splice(peopleToRemoveIndex, 1);
-                $scope.selectPeopleByIndex(peopleToRemoveIndex);
-              }
+              $scope.people.splice($scope.selectedPeopleIndex, 1);
+              $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
             })
         }, function() {});
     };
@@ -160,7 +156,7 @@ angular.module('clientApp')
         $scope.people = response.data;
         if ($scope.people.length > 0)
         {
-          $scope.selectPeople($scope.people[0]);
+          $scope.selectPeopleByIndex(0);
         }
       });
       

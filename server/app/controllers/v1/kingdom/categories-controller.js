@@ -1,4 +1,4 @@
-var sqlite3 = require('sqlite3').verbose();
+var rewards = require('../../../rewards');
   
 function CategoriesController() {
 }
@@ -31,33 +31,35 @@ function query(req, res, db, id)
 // Get all
 //
 function get(req, res) {
-  var db = new sqlite3.Database('./people.db');
-  query(req, res, db);
+  rewards.Database.connect(function(db)  {
+    query(req, res, db);
+  });
 }
 
 function put(req, res) {
-  var db = new sqlite3.Database('./people.db');
-  if (req.params.id === undefined)
-  {
+  rewards.Database.connect(function(db)  {
+    if (req.params.id === undefined)
+    {
+      //
+      // insert
+      //
+      db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err) {
+        if (err) {
+          throw err;
+        }
+        query(req, res, db, "(select last_insert_rowid())");      
+      });
+      return;  
+    }
     //
-    // insert
+    // update
     //
-    db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err) {
+    db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err) {
       if (err) {
         throw err;
       }
-      query(req, res, db, "(select last_insert_rowid())");      
+      query(req, res, db, req.params.id);
     });
-    return;  
-  }
-  //
-  // update
-  //
-  db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err) {
-    if (err) {
-      throw err;
-    }
-    query(req, res, db, req.params.id);
   });
 }
 
@@ -65,13 +67,14 @@ function put(req, res) {
 // DELETE
 //
 function remove(req, res) {
-  var db = new sqlite3.Database('./people.db');
-  db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err) {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(undefined);
-    db.close();
+  rewards.Database.connect(function(db)  {
+    db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err) {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json(undefined);
+      db.close();
+    });
   });
 }
 

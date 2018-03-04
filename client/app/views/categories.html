@@ -1,6 +1,6 @@
-<md-content>
-  <md-tabs md-dynamic-height="" md-border-bottom="">
-    <md-tab label="{{c.name}}" ng-repeat="c in categories" ng-click="selectCategory(c)">
+<md-content id="popupContainer">
+  <md-tabs md-selected="selectedCategoryIndex" md-dynamic-height="" md-border-bottom="">
+    <md-tab label="{{c.name}}" ng-repeat="c in titleCategories">
       <md-tab-body>
         <table class="table table-responsive">
           <thead>
@@ -37,7 +37,7 @@
         </div>
       </md-tab-body>
     </md-tab>
-    <md-tab ng-click="unselectCategory()">
+    <md-tab>
       <md-tab-label>
         <div class="glyphicon glyphicon-plus"></div>
       </md-tab-label>

@@ -16,15 +16,24 @@ function applyMigrationFrom(db, index)
   console.log("Applying migration #" + index);
   fs.readFile(migrations[index], 'utf8', function(err, content) { 
     if (err)
+    {
+      db.close();
       return console.error(err.message);
+    }
     db.exec(content, err => {
       if (err)
+      {
+        db.close();
         return console.error(err.message);
+      }
       console.log("Done.")
       var nextIndex = index + 1;
       db.run("PRAGMA user_version = " + nextIndex + ";", err => {
         if (err)
+        {
+          db.close();
           return console.error(err.message);
+        }
         applyMigrationFrom(db, nextIndex);
       });
     });
@@ -32,13 +41,15 @@ function applyMigrationFrom(db, index)
 }
 
 function createIfNotExist() {
-  var sqlite3 = require('sqlite3').verbose();
-  var db = new sqlite3.Database('./people.db');
+  var rewards = require('./rewards');
   
-  db.serialize(function() {
+  rewards.Database.connect(function(db)  {
     db.get("PRAGMA user_version;", (err, row) => {
       if (err)
-        return console.error(err.message)
+      {
+        db.close();
+        return console.error(err.message);
+      }
       applyMigrationFrom(db, row.user_version);
     });
   });

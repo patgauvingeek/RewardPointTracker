@@ -1,5 +1,5 @@
-var sqlite3 = require('sqlite3').verbose();
-
+var rewards = require('../../../rewards');
+  
 function PeopleController() {
 }
 
@@ -55,51 +55,52 @@ function query(req, res, db, id)
 }
 
 function get(req, res, next) {
-  var db = new sqlite3.Database('./people.db');
-  query(req, res, db);
+  rewards.Database.connect(function(db)  {
+    query(req, res, db);
+  });
 }
 
 function put(req, res, next) {
-  var db = new sqlite3.Database('./people.db');
+  rewards.Database.connect(function(db)  {
+    if (req.body.sex != "M" || req.body.sex != "F"){
+      new Error("The sex field have to be \"M\" or \"F\"");
+    }
 
-  if (req.body.sex != "M" || req.body.sex != "F"){
-    new Error("The sex field have to be \"M\" or \"F\"");
-  }
-
-  let sql_param = [
-    req.body.name,
-    req.body.sex == "M" ? 0 : 1,
-    req.body.category_id
-  ]
-  if (req.params.id === undefined)
-  {
+    let sql_param = [
+      req.body.name,
+      req.body.sex == "M" ? 0 : 1,
+      req.body.category_id
+    ]
+    if (req.params.id === undefined)
+    {
+      //
+      // insert
+      //
+      let sql_insert = `INSERT INTO people 
+                          (name, sex, category_id)
+                        VALUES
+                          (?, ?, ?);`;
+      db.run(sql_insert, sql_param, function(err, rows) {
+        if (err) {
+          throw err;
+        }
+        query(req, res, db, "(select last_insert_rowid())");      
+      });
+      return;  
+    }
     //
-    // insert
+    // update
     //
-    let sql_insert = `INSERT INTO people 
-                        (name, sex, category_id)
-                      VALUES
-                        (?, ?, ?);`;
-    db.run(sql_insert, sql_param, function(err, rows) {
+    sql_param.push(req.params.id);
+    var sql_update = `UPDATE people 
+                      SET name = ?, sex = ?, category_id = ?
+                      WHERE id = ?`;
+    db.run(sql_update, sql_param, function(err, rows) {
       if (err) {
         throw err;
       }
-      query(req, res, db, "(select last_insert_rowid())");      
+      query(req, res, db, req.params.id);
     });
-    return;  
-  }
-  //
-  // update
-  //
-  sql_param.push(req.params.id);
-  var sql_update = `UPDATE people 
-                    SET name = ?, sex = ?, category_id = ?
-                    WHERE id = ?`;
-  db.run(sql_update, sql_param, function(err, rows) {
-    if (err) {
-      throw err;
-    }
-    query(req, res, db, req.params.id);
   });
 }
 
@@ -107,13 +108,14 @@ function put(req, res, next) {
 // DELETE
 //
 function remove(req, res) {
-  var db = new sqlite3.Database('./people.db');
-  db.run("DELETE FROM people WHERE id = ?;", [req.params.id], function(err) {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(undefined);
-    db.close();
+  rewards.Database.connect(function(db)  {
+    db.run("DELETE FROM people WHERE id = ?;", [req.params.id], function(err) {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json(undefined);
+      db.close();
+    });
   });
 }
 
