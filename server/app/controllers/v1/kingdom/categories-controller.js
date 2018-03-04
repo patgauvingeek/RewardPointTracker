@@ -15,7 +15,7 @@ function query(req, res, db, id)
   }
   db.queryMethod(sql, function(err, row_rows) {
     if (err) {
-      throw err;
+      return console.log(err);
     }
     if (row_rows === undefined)
     {
@@ -45,7 +45,7 @@ function put(req, res) {
       //
       db.run("INSERT INTO categories (name) VALUES(?);", [req.body.name], function(err) {
         if (err) {
-          throw err;
+          return console.log(err);
         }
         query(req, res, db, "(select last_insert_rowid())");      
       });
@@ -56,7 +56,7 @@ function put(req, res) {
     //
     db.run("UPDATE categories SET name = ? WHERE id = ?;", [req.body.name, req.params.id], function(err) {
       if (err) {
-        throw err;
+        return console.log(err);
       }
       query(req, res, db, req.params.id);
     });
@@ -70,7 +70,7 @@ function remove(req, res) {
   rewards.Database.connect(function(db)  {
     db.run("DELETE FROM categories WHERE id = ?;", [req.params.id], function(err) {
       if (err) {
-        throw err;
+        return console.log(err);
       }
       res.status(200).json(undefined);
       db.close();
