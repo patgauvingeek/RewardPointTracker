@@ -33,7 +33,7 @@ angular.module('clientApp')
     $scope.selectCategory = function(category)
     {
       $scope.selectedCategory = category;
-      $http.get("http://localhost:9000/v1/categories/" + category.id + "/titles")
+      $http.get('http://' + window.location.hostname + ':9000/v1/categories/' + category.id + '/titles')
         .then(function(response) {
           $scope.titles = response.data;
           $scope.newCategory = { name : "" };
@@ -62,7 +62,7 @@ angular.module('clientApp')
     }
     $scope.addCategory = function()
     {
-      $http.put('http://localhost:9000/v1/categories', $scope.newCategory)
+      $http.put('http://' + window.location.hostname + ':9000/v1/categories', $scope.newCategory)
       .then(function(response) {
         $scope.titleCategories.push(response.data);
         $scope.selectCategory(response.data);
@@ -82,7 +82,7 @@ angular.module('clientApp')
         .cancel("Non");
       $mdDialog.show(dialog)
         .then(function () {
-          $http.delete('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id)
+          $http.delete('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id)
             .then(function(response) {
               $scope.titleCategories.splice($scope.selectedCategoryIndex, 1);
               $scope.selectCategoryByIndex($scope.selectedCategoryIndex);
@@ -99,7 +99,7 @@ angular.module('clientApp')
 
     $scope.addTitle = function()
     {
-      $http.put('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id + '/titles', $scope.newTitle)
+      $http.put('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id + '/titles', $scope.newTitle)
       .then(function(response) {
         $scope.selectCategory($scope.selectedCategory);
       }, function(response) {
@@ -125,7 +125,7 @@ angular.module('clientApp')
         .cancel("Non");
       $mdDialog.show(dialog)
         .then(function () {
-          $http.delete('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id + '/titles/' + title.id)
+          $http.delete('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id + '/titles/' + title.id)
             .then(function(response) {
               $scope.titles.splice(index, 1);
             }, function(response) {
@@ -146,7 +146,7 @@ angular.module('clientApp')
       );
     };
 
-    $http.get('http://localhost:9000/v1/categories')
+    $http.get('http://' + window.location.hostname + ':9000/v1/categories')
       .then(function(response) {
         $scope.titleCategories = response.data;
         if ($scope.titleCategories.length > 0)

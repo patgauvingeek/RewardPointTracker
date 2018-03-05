@@ -37,7 +37,7 @@ angular.module('clientApp')
       $scope.selectedPeople = people;
       // If the next request fail, the list will be empty.
       $scope.rewards.splice(0,$scope.rewards.length);
-      $http.get('http://localhost:9000/v1/people/' + people.id + '/rewards')
+      $http.get('http://' + window.location.hostname + ':9000/v1/people/' + people.id + '/rewards')
         .then(function(response) {
           var items = [];
           var len = response.data.length;
@@ -64,7 +64,7 @@ angular.module('clientApp')
           var data = {
             datetime: dateFixedTimezone.tz("UTC").format("YYYY-MM-DD HH:mm:SS")
           };
-          $http.put('http://localhost:9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
+          $http.put('http://' + window.location.hostname + ':9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
             .then(function(response)
             {
               var newTitleEarned = $scope.selectedPeople.title != response.data.title;
@@ -106,7 +106,7 @@ angular.module('clientApp')
     };
 
     $scope.showCertificate = function(people) {
-      var wCertificateWindow = window.open("http://localhost:9001/certificat.html");
+      var wCertificateWindow = window.open('http://' + window.location.hostname + ':9001/certificat.html');
       wCertificateWindow.onload = function () {
         wCertificateWindow.document.getElementById("name").innerHTML = people.name;
         wCertificateWindow.document.getElementById("title").innerHTML = people.title;
@@ -129,7 +129,7 @@ angular.module('clientApp')
         sex: "M",
         category_id: -1
       }
-      $http.get('http://localhost:9000/v1/categories')
+      $http.get('http://' + window.location.hostname + ':9000/v1/categories')
         .then(function(response) {
           $scope.titleCategories = response.data;
         }, function(response) {
@@ -138,7 +138,7 @@ angular.module('clientApp')
     }
     $scope.addPeople = function()
     {      
-      $http.put('http://localhost:9000/v1/people', $scope.newPeople)
+      $http.put('http://' + window.location.hostname + ':9000/v1/people', $scope.newPeople)
         .then(function(response) {
           $scope.people.push(response.data);
           $scope.selectPeople(response.data);
@@ -171,7 +171,7 @@ angular.module('clientApp')
         .cancel("Non");
       $mdDialog.show(dialog)
         .then(function () {
-          $http.delete('http://localhost:9000/v1/people/' + $scope.selectedPeople.id)
+          $http.delete('http://' + window.location.hostname + ':9000/v1/people/' + $scope.selectedPeople.id)
             .then(function(response) {
               $scope.people.splice($scope.selectedPeopleIndex, 1);
               $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
@@ -193,7 +193,7 @@ angular.module('clientApp')
       );
     };
 
-    $http.get('http://localhost:9000/v1/people')
+    $http.get('http://' + window.location.hostname + ':9000/v1/people')
       .then(function(response) {
         $scope.people = response.data;
         if ($scope.people.length > 0)
