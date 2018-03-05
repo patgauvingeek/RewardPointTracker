@@ -145,6 +145,12 @@ angular.module('clientApp')
         }, function(response) {
           if (response.data.errno == 19)
           {
+            if ($scope.newPeople.category_id === -1)
+            {
+              $scope.showError("Veuillez sélectionner une catégorie.", response.data);
+              return;
+            }
+            $scope.newPeople.category_id = -1;
             var categoryIndex = $scope.titleCategories.findIndex(function(category) { return category.id === $scope.newPeople.category_id});
             $scope.titleCategories.splice(categoryIndex);
             $scope.showError("Cette catégorie n'existe plus.", response.data);
