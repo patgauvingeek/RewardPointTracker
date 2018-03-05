@@ -82,7 +82,9 @@ angular.module('clientApp')
             }, function(response) {
               if (response.data.errno == 19)
               {
-                $scope.showError("Cette perssone n'existe plus.", response.data);
+                $scope.people.splice($scope.selectedPeopleIndex, 1);
+                $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
+                $scope.showError("Cette personne n'existe plus.", response.data);
                 return;
               }
               $scope.showError("Erreur inconnue: check the log for more information.", response.data);
@@ -143,6 +145,8 @@ angular.module('clientApp')
         }, function(response) {
           if (response.data.errno == 19)
           {
+            var categoryIndex = $scope.titleCategories.findIndex(function(category) { return category.id === $scope.newPeople.category_id});
+            $scope.titleCategories.splice(categoryIndex);
             $scope.showError("Cette catégorie n'existe plus.", response.data);
             return;
           }

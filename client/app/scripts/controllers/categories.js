@@ -105,6 +105,8 @@ angular.module('clientApp')
       }, function(response) {
         if (response.data.errno == 19)
         {
+          $scope.titleCategories.splice($scope.selectedCategoryIndex, 1);
+          $scope.selectCategoryByIndex($scope.selectedCategoryIndex);
           $scope.showError("Cette catégorie n'existe plus.", response.data);
           return;
         }
