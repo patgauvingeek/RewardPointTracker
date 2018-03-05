@@ -112,6 +112,26 @@ angular.module('clientApp')
       });  
     }
 
+    $scope.deleteTitle = function(index, title)
+    {
+      var dialog = $mdDialog.confirm()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(false)
+        .title("DANGER")
+        .textContent("Êtes-vous certain de vouloir supprimer le titre " + title.male_title + " / " + title.female_title + " ?")
+        .ok("Oui")
+        .cancel("Non");
+      $mdDialog.show(dialog)
+        .then(function () {
+          $http.delete('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id + '/titles/' + title.id)
+            .then(function(response) {
+              $scope.titles.splice(index, 1);
+            }, function(response) {
+              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+            });
+        }, function() {});
+    }
+
     $scope.showError = function(message, error) {
       console.log(error);
       $mdDialog.show(
