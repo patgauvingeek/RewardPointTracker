@@ -58,7 +58,7 @@ angular.module('clientApp')
     
     $scope.uiConfig = {
       calendar:{
-        dayClick: function( date, jsEvent, view ) {
+        dayClick: function(date/*, jsEvent, view*/) {
           // The date is good but in the wrong timezone (UTC). This convert the timezone to the local timezone.
           var dateFixedTimezone = moment(date.format("YYYY-MM-DD HH:mm:SS"));
           var data = {
@@ -67,8 +67,8 @@ angular.module('clientApp')
           $http.put('http://' + window.location.hostname + ':9000/v1/people/' + $scope.selectedPeople.id + '/rewards', data)
             .then(function(response)
             {
-              var newTitleEarned = $scope.selectedPeople.title != response.data.title;
-              var index = $scope.people.findIndex(function(p) { return p.id == $scope.selectedPeople.id; });
+              var newTitleEarned = $scope.selectedPeople.title !== response.data.title;
+              var index = $scope.people.findIndex(function(p) { return p.id === $scope.selectedPeople.id; });
               if (index > -1)
               {
                 $scope.people[index].title = response.data.title;
@@ -77,7 +77,7 @@ angular.module('clientApp')
               }
               if (newTitleEarned)
               {
-                $scope.showNewTitleDialog($scope.selectedPeople)
+                $scope.showNewTitleDialog($scope.selectedPeople);
               } 
             }, function(response) {
               if (response.data.errno === 19)
@@ -151,7 +151,7 @@ angular.module('clientApp')
               return;
             }
             $scope.newPeople.category_id = -1;
-            var categoryIndex = $scope.titleCategories.findIndex(function(category) { return category.id === $scope.newPeople.category_id});
+            var categoryIndex = $scope.titleCategories.findIndex(function(category) { return category.id === $scope.newPeople.category_id; });
             $scope.titleCategories.splice(categoryIndex);
             $scope.showError("Cette catégorie n'existe plus.", response.data);
             return;
@@ -172,7 +172,7 @@ angular.module('clientApp')
       $mdDialog.show(dialog)
         .then(function () {
           $http.delete('http://' + window.location.hostname + ':9000/v1/people/' + $scope.selectedPeople.id)
-            .then(function(response) {
+            .then(function(/*response*/) {
               $scope.people.splice($scope.selectedPeopleIndex, 1);
               $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
             }, function(response) {

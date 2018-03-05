@@ -67,7 +67,7 @@ angular.module('clientApp')
       }, function(response) {
         $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
       });  
-    }
+    };
 
     $scope.deleteSelectedCategory = function()
     {
