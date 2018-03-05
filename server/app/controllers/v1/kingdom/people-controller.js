@@ -42,6 +42,7 @@ function query(req, res, db, id)
   }
   db.queryMethod(sql, function(err, row_rows) {
     if (err) {
+      res.status(400).json(err);
       return console.log(err);
     }
     if (row_rows === undefined)
@@ -62,8 +63,10 @@ function get(req, res, next) {
 
 function put(req, res, next) {
   rewards.Database.connect(function(db)  {
-    if (req.body.sex != "M" || req.body.sex != "F"){
-      new Error("The sex field have to be \"M\" or \"F\"");
+    if (req.body.sex !== "M" && req.body.sex !== "F") {
+      var err = { Error: "The sex field have to be \"M\" or \"F\"." };
+      res.status(400).json(err);
+      return console.log(err);
     }
 
     let sql_param = [
@@ -82,6 +85,7 @@ function put(req, res, next) {
                           (?, ?, ?);`;
       db.run(sql_insert, sql_param, function(err, rows) {
         if (err) {
+          res.status(500).json(err);
           return console.log(err);
         }
         query(req, res, db, "(select last_insert_rowid())");      
@@ -97,6 +101,7 @@ function put(req, res, next) {
                       WHERE id = ?`;
     db.run(sql_update, sql_param, function(err, rows) {
       if (err) {
+        res.status(500).json(err);
         return console.log(err);
       }
       query(req, res, db, req.params.id);
@@ -111,6 +116,7 @@ function remove(req, res) {
   rewards.Database.connect(function(db)  {
     db.run("DELETE FROM people WHERE id = ?;", [req.params.id], function(err) {
       if (err) {
+        res.status(500).json(err);
         return console.log(err);
       }
       res.status(200).json(undefined);

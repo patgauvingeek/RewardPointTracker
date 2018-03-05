@@ -46,6 +46,8 @@ angular.module('clientApp')
             items.push({start: new Date(response.data[i] + " UTC") });
           }
           $scope.rewards.push(items);
+        }, function(response) {
+          $scope.showError("Erreur inconnue: check the log for more information.", response.data);
         });
     }
     $scope.unselectPeople = function()
@@ -77,6 +79,13 @@ angular.module('clientApp')
               {
                 $scope.showNewTitleDialog($scope.selectedPeople)
               } 
+            }, function(response) {
+              if (response.data.errno == 19)
+              {
+                $scope.showError("Cette perssone n'existe plus.", response.data);
+                return;
+              }
+              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
             });
         },
         eventRender: $scope.eventRender
@@ -121,6 +130,8 @@ angular.module('clientApp')
       $http.get('http://localhost:9000/v1/categories')
         .then(function(response) {
           $scope.titleCategories = response.data;
+        }, function(response) {
+          $scope.showError("Erreur inconnue: check the log for more information.", response.data);
         });
     }
     $scope.addPeople = function()
@@ -129,6 +140,13 @@ angular.module('clientApp')
         .then(function(response) {
           $scope.people.push(response.data);
           $scope.selectPeople(response.data);
+        }, function(response) {
+          if (response.data.errno == 19)
+          {
+            $scope.showError("Cette catégorie n'existe plus.", response.data);
+            return;
+          }
+          $scope.showError("Erreur inconnue: check the log for more information.", response.data);
         });  
     }
 
@@ -147,8 +165,22 @@ angular.module('clientApp')
             .then(function(response) {
               $scope.people.splice($scope.selectedPeopleIndex, 1);
               $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
-            })
+            }, function(response) {
+              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+            });
         }, function() {});
+    };
+    
+    $scope.showError = function(message, error) {
+      console.log(error);
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title("ERREUR")
+          .textContent(message)
+          .ok('Continuer')
+      );
     };
 
     $http.get('http://localhost:9000/v1/people')
@@ -158,6 +190,8 @@ angular.module('clientApp')
         {
           $scope.selectPeopleByIndex(0);
         }
+      }, function(response) {
+        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
       });
       
   });

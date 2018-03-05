@@ -44,6 +44,8 @@ angular.module('clientApp')
               ? $scope.titles[$scope.titles.length-1].cost + 6
               : 0
           };
+        }, function(response) {
+          $scope.showError("Erreur inconnue: check the log for more information.", response.data);
         });
     };
     $scope.unselectCategory = function()
@@ -64,6 +66,8 @@ angular.module('clientApp')
       .then(function(response) {
         $scope.titleCategories.push(response.data);
         $scope.selectCategory(response.data);
+      }, function(response) {
+        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
       });  
     }
 
@@ -82,7 +86,14 @@ angular.module('clientApp')
             .then(function(response) {
               $scope.titleCategories.splice($scope.selectedCategoryIndex, 1);
               $scope.selectCategoryByIndex($scope.selectedCategoryIndex);
-            })
+            }, function(response) {
+              if (response.data.errno == 19)
+              {
+                $scope.showError("Cette catégorie est utilisée par une ou plusieurs personnes.", response.data);
+                return;
+              }
+              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+            });
         }, function() {});
     }
 
@@ -91,8 +102,27 @@ angular.module('clientApp')
       $http.put('http://localhost:9000/v1/categories/' + $scope.selectedCategory.id + '/titles', $scope.newTitle)
       .then(function(response) {
         $scope.selectCategory($scope.selectedCategory);
+      }, function(response) {
+        if (response.data.errno == 19)
+        {
+          $scope.showError("Cette catégorie n'existe plus.", response.data);
+          return;
+        }
+        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
       });  
     }
+
+    $scope.showError = function(message, error) {
+      console.log(error);
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title("ERREUR")
+          .textContent(message)
+          .ok('Continuer')
+      );
+    };
 
     $http.get('http://localhost:9000/v1/categories')
       .then(function(response) {
@@ -101,6 +131,8 @@ angular.module('clientApp')
         {
           $scope.selectCategoryByIndex(0);
         }
+      }, function(response) {
+        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
       });
 
   });

@@ -1,57 +1,59 @@
-<md-content id="popupContainer">
-  <md-tabs md-selected="selectedCategoryIndex" md-dynamic-height="" md-border-bottom="">
-    <md-tab label="{{c.name}}" ng-repeat="c in titleCategories">
-      <md-tab-body>
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th>Titre Masculin</th>
-              <th>Titre Féminin</th>
-              <th>Coût</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="t in titles">
-              <td>{{t.male_title}}</td>
-              <td>{{t.female_title}}</td>
-              <td>{{t.cost}}</td>
-              <td>
-                <button type="button" class="btn btn-danger" ng-click="deleteTitle()">
-                  <div class="glyphicon glyphicon-remove"></div>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td class="col-xs-4"><input type="text" class="form-control input-dm" ng-model="newTitle.male_title"></input></td>
-              <td class="col-xs-4"><input type="text" class="form-control input-dm" ng-model="newTitle.female_title"></input></td>
-              <td class="col-xs-3"><input type="number" class="form-control input-dm" ng-model="newTitle.cost"></input></td>
-              <td class="col-xs-1"><button type="button" class="btn btn-success" ng-click="addTitle()">Ajouter</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="pull-right"> 
-          <button type="button" class="btn btn-danger" ng-click="deleteSelectedCategory()">
-            Supprimer la catégorie
-          </button>
-        </div>
-      </md-tab-body>
-    </md-tab>
-    <md-tab>
-      <md-tab-label>
-        <div class="glyphicon glyphicon-plus"></div>
-      </md-tab-label>
-      <md-tab-body>
-        <div class="panel panel-default">
-          <div class="panel-heading">Nouvelle catégories</div>
-          <div class="panel-body">
-            <input type="text" ng-model="newCategory.name"></input>
+<div id="popupContainer">
+  <md-content id="popupContainer">
+    <md-tabs md-selected="selectedCategoryIndex" md-dynamic-height="" md-border-bottom="">
+      <md-tab label="{{c.name}}" ng-repeat="c in titleCategories">
+        <md-tab-body>
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>Titre Masculin</th>
+                <th>Titre Féminin</th>
+                <th>Coût</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="t in titles">
+                <td>{{t.male_title}}</td>
+                <td>{{t.female_title}}</td>
+                <td>{{t.cost}}</td>
+                <td>
+                  <button type="button" class="btn btn-danger" ng-click="deleteTitle()">
+                    <div class="glyphicon glyphicon-remove"></div>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="col-xs-4"><input type="text" class="form-control input-dm" ng-model="newTitle.male_title"></input></td>
+                <td class="col-xs-4"><input type="text" class="form-control input-dm" ng-model="newTitle.female_title"></input></td>
+                <td class="col-xs-3"><input type="number" class="form-control input-dm" ng-model="newTitle.cost"></input></td>
+                <td class="col-xs-1"><button type="button" class="btn btn-success" ng-click="addTitle()">Ajouter</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pull-right"> 
+            <button type="button" class="btn btn-danger" ng-click="deleteSelectedCategory()">
+              Supprimer la catégorie
+            </button>
           </div>
-          <div class="panel-footer">
-            <button type="button" class="btn btn-success" ng-click="addCategory()">Ajouter</button>
+        </md-tab-body>
+      </md-tab>
+      <md-tab>
+        <md-tab-label>
+          <div class="glyphicon glyphicon-plus"></div>
+        </md-tab-label>
+        <md-tab-body>
+          <div class="panel panel-default">
+            <div class="panel-heading">Nouvelle catégories</div>
+            <div class="panel-body">
+              <input type="text" ng-model="newCategory.name"></input>
+            </div>
+            <div class="panel-footer">
+              <button type="button" class="btn btn-success" ng-click="addCategory()">Ajouter</button>
+            </div>
           </div>
-        </div>
-      </md-tab-body>
-    </md-tab>
-  </md-tabs>
-</md-content>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

@@ -11,6 +11,7 @@ function get(req, res, next) {
                 WHERE people_id = ?;`;
     db.all(sql, [req.params.id], function(err, rows) {
       if (err) {
+        res.status(400).json(err);
         return console.log(err);
       }
       let datetimes = rows.map(function(v){
@@ -32,6 +33,7 @@ function put(req, res) {
 
     db.run(sql, [req.params.id], function(err) {
       if (err) {
+        res.status(500).json(err);
         return console.log(err);
       }
       new peopleController.query(req, res, db, req.params.id);      
