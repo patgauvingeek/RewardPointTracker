@@ -16,10 +16,10 @@ angular.module('clientApp')
     $scope.eventRender = function(event, element)
     {
       element.html('<div class="text-center"><img width="48" src="images/medal.png"></div>');
-    }
+    };
 
     $scope.selectedPeopleIndex = 0;
-    $scope.$watch('selectedPeopleIndex', function(current, old)
+    $scope.$watch('selectedPeopleIndex', function(current/*, old*/)
     {
       $scope.selectPeopleByIndex(current);
     });
@@ -31,7 +31,7 @@ angular.module('clientApp')
         return;
       }
       $scope.selectPeople($scope.people[peopleIndex]);
-    }
+    };
     $scope.selectPeople = function(people)
     {
       $scope.selectedPeople = people;
@@ -49,12 +49,12 @@ angular.module('clientApp')
         }, function(response) {
           $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
         });
-    }
+    };
     $scope.unselectPeople = function()
     {
       $scope.selectedPeople = null;
       $scope.rewards.splice(0,$scope.rewards.length);
-    }
+    };
     
     $scope.uiConfig = {
       calendar:{
@@ -80,7 +80,7 @@ angular.module('clientApp')
                 $scope.showNewTitleDialog($scope.selectedPeople)
               } 
             }, function(response) {
-              if (response.data.errno == 19)
+              if (response.data.errno === 19)
               {
                 $scope.people.splice($scope.selectedPeopleIndex, 1);
                 $scope.selectPeopleByIndex($scope.selectedPeopleIndex);
@@ -112,15 +112,15 @@ angular.module('clientApp')
         wCertificateWindow.document.getElementById("title").innerHTML = people.title;
         wCertificateWindow.document.getElementById("points").innerHTML = people.points;
         wCertificateWindow.document.getElementById("date").innerHTML = moment().format('DD/MM/YYYY');
-      }      
-    }
+      };
+    };
 
     $scope.titleCategories = [];
     $scope.newPeople = {
       name: "",
       sex: "M",
       category_id: -1
-    }
+    };
     $scope.startAddNewPeople = function()
     {
       $scope.unselectPeople();
@@ -128,14 +128,14 @@ angular.module('clientApp')
         name: "",
         sex: "M",
         category_id: -1
-      }
+      };
       $http.get('http://' + window.location.hostname + ':9000/v1/categories')
         .then(function(response) {
           $scope.titleCategories = response.data;
         }, function(response) {
           $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
         });
-    }
+    };
     $scope.addPeople = function()
     {      
       $http.put('http://' + window.location.hostname + ':9000/v1/people', $scope.newPeople)
@@ -143,7 +143,7 @@ angular.module('clientApp')
           $scope.people.push(response.data);
           $scope.selectPeople(response.data);
         }, function(response) {
-          if (response.data.errno == 19)
+          if (response.data.errno === 19)
           {
             if ($scope.newPeople.category_id === -1)
             {
@@ -158,7 +158,7 @@ angular.module('clientApp')
           }
           $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
         });  
-    }
+    };
 
     $scope.deleteSelectedPeople = function()
     {

@@ -17,7 +17,7 @@ angular.module('clientApp')
     $scope.newTitle = { male_title: "", female_title: "", cost: 0 };
 
     $scope.selectedCategoryIndex = 0;
-    $scope.$watch('selectedCategoryIndex', function(current, old)
+    $scope.$watch('selectedCategoryIndex', function(current/*, old*/)
     {
       $scope.selectCategoryByIndex(current);
     });
@@ -29,7 +29,7 @@ angular.module('clientApp')
         return;
       }
       $scope.selectCategory($scope.titleCategories[categoryIndex]);
-    }
+    };
     $scope.selectCategory = function(category)
     {
       $scope.selectedCategory = category;
@@ -40,9 +40,7 @@ angular.module('clientApp')
           $scope.newTitle = { 
             male_title: "", 
             female_title: "", 
-            cost: $scope.titles.length > 0
-              ? $scope.titles[$scope.titles.length-1].cost + 6
-              : 0
+            cost: $scope.titles.length > 0 ? $scope.titles[$scope.titles.length-1].cost + 6 : 0
           };
         }, function(response) {
           $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
@@ -59,7 +57,7 @@ angular.module('clientApp')
       $scope.unselectCategory();
       $scope.newCategory = { name : "" };
       $scope.newTitle = { male_title: "", female_title: "", cost: 0 };
-    }
+    };
     $scope.addCategory = function()
     {
       $http.put('http://' + window.location.hostname + ':9000/v1/categories', $scope.newCategory)
@@ -83,11 +81,11 @@ angular.module('clientApp')
       $mdDialog.show(dialog)
         .then(function () {
           $http.delete('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id)
-            .then(function(response) {
+            .then(function(/*response*/) {
               $scope.titleCategories.splice($scope.selectedCategoryIndex, 1);
               $scope.selectCategoryByIndex($scope.selectedCategoryIndex);
             }, function(response) {
-              if (response.data.errno == 19)
+              if (response.data.errno === 19)
               {
                 $scope.showError("Cette catégorie est utilisée par une ou plusieurs personnes.", response.data);
                 return;
@@ -95,15 +93,15 @@ angular.module('clientApp')
               $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
             });
         }, function() {});
-    }
+    };
 
     $scope.addTitle = function()
     {
       $http.put('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id + '/titles', $scope.newTitle)
-      .then(function(response) {
+      .then(function(/*response*/) {
         $scope.selectCategory($scope.selectedCategory);
       }, function(response) {
-        if (response.data.errno == 19)
+        if (response.data.errno === 19)
         {
           $scope.titleCategories.splice($scope.selectedCategoryIndex, 1);
           $scope.selectCategoryByIndex($scope.selectedCategoryIndex);
@@ -112,7 +110,7 @@ angular.module('clientApp')
         }
         $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
       });  
-    }
+    };
 
     $scope.deleteTitle = function(index, title)
     {
@@ -126,13 +124,13 @@ angular.module('clientApp')
       $mdDialog.show(dialog)
         .then(function () {
           $http.delete('http://' + window.location.hostname + ':9000/v1/categories/' + $scope.selectedCategory.id + '/titles/' + title.id)
-            .then(function(response) {
+            .then(function(/*response*/) {
               $scope.titles.splice(index, 1);
             }, function(response) {
               $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
             });
         }, function() {});
-    }
+    };
 
     $scope.showError = function(message, error) {
       console.log(error);
