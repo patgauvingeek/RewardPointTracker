@@ -45,7 +45,7 @@ angular.module('clientApp')
               : 0
           };
         }, function(response) {
-          $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+          $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
         });
     };
     $scope.unselectCategory = function()
@@ -67,7 +67,7 @@ angular.module('clientApp')
         $scope.titleCategories.push(response.data);
         $scope.selectCategory(response.data);
       }, function(response) {
-        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+        $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
       });  
     }
 
@@ -92,7 +92,7 @@ angular.module('clientApp')
                 $scope.showError("Cette catégorie est utilisée par une ou plusieurs personnes.", response.data);
                 return;
               }
-              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+              $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
             });
         }, function() {});
     }
@@ -110,7 +110,7 @@ angular.module('clientApp')
           $scope.showError("Cette catégorie n'existe plus.", response.data);
           return;
         }
-        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+        $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
       });  
     }
 
@@ -129,7 +129,7 @@ angular.module('clientApp')
             .then(function(response) {
               $scope.titles.splice(index, 1);
             }, function(response) {
-              $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+              $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
             });
         }, function() {});
     }
@@ -154,7 +154,7 @@ angular.module('clientApp')
           $scope.selectCategoryByIndex(0);
         }
       }, function(response) {
-        $scope.showError("Erreur inconnue: check the log for more information.", response.data);
+        $scope.showError("Erreur inconnue: " + JSON.stringify(response), response.data);
       });
 
   });
