@@ -1,5 +1,6 @@
 {
   "settings": [
-    { "name": "queueLength", "value": 511 }
+    { "name": "queueLength", "value": 511 },
+    { "name": "databaseFilename", "value": "/var/lib/rewards/rewards.db" }
   ]
 }
