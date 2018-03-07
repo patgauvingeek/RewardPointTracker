@@ -1,7 +1,9 @@
+'use strict';
+
 function DbCreator() {
 }
 
-migrations = [
+var migrations = [
   "./app/migrations/initial.sql"
 ];
 
@@ -26,7 +28,7 @@ function applyMigrationFrom(db, index)
         db.close();
         return console.error(err.message);
       }
-      console.log("Done.")
+      console.log("Done.");
       var nextIndex = index + 1;
       db.run("PRAGMA user_version = " + nextIndex + ";", err => {
         if (err)
