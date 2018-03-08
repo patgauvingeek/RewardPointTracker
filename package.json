@@ -1,0 +1,25 @@
+{
+  "name": "rewardpointtracker",
+  "version": "1.0.0",
+  "description": "reward system for kids",
+  "main": "Gruntfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.2",
+    "grunt-prompt": "^1.3.3",
+    "grunt-ssh": "^0.12.9"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patgauvingeek/RewardPointTracker.git"
+  },
+  "author": "Patrick Gauvin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patgauvingeek/RewardPointTracker/issues"
+  },
+  "homepage": "https://github.com/patgauvingeek/RewardPointTracker#readme"
+}

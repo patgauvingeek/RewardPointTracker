@@ -22,7 +22,7 @@ function applyMigrationFrom(db, index)
       db.close();
       return console.error(err.message);
     }
-    db.exec(content, err => {
+    db.exec(content, function(err) {
       if (err)
       {
         db.close();
@@ -30,7 +30,7 @@ function applyMigrationFrom(db, index)
       }
       console.log("Done.");
       var nextIndex = index + 1;
-      db.run("PRAGMA user_version = " + nextIndex + ";", err => {
+      db.run("PRAGMA user_version = " + nextIndex + ";", function(err) {
         if (err)
         {
           db.close();
@@ -46,7 +46,7 @@ function createIfNotExist() {
   var rewards = require('./rewards');
   
   rewards.Database.connect(function(db)  {
-    db.get("PRAGMA user_version;", (err, row) => {
+    db.get("PRAGMA user_version;", function(err, row) {
       if (err)
       {
         db.close();

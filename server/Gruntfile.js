@@ -2,7 +2,7 @@
 
 module.exports = function(grunt) {
 
-  // Load the plugin that provides the "uglify" task.
+  // Load the plugin that provides the "jshint" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.initConfig({
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         src: [
           'Gruntfile.js',
           './{,*/}*.js',
-         '!./node_modules/{,*/}*.js'
+          '!./node_modules/{,*/}*.js'
         ]
       }
     }
