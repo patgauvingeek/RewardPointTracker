@@ -9,10 +9,10 @@ sudo npm install http-server -g
 
 # configure pm2 + start
 pm2 start /opt/sites/rewards/webapi/server.js --name="RewardsWebApi" -- 0 prod 0.0.0.0
-pm2 start /usr/local/bin/http-server --name="RewardHttpServer" -- /opt/sites/rewards/web -p 80 -d false
+pm2 start /usr/local/bin/http-server --name="RewardHttpServer" -- /opt/sites/rewards/web -p 9001 -d false
 
-# generate boot files (Ubuntu 16 ?)
-pm2 startup
+# generate boot files
+pm2 startup upstart -u media --hp /home/media
 pm2 save
 
 # unistall

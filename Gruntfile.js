@@ -69,7 +69,9 @@ module.exports = function(grunt) {
     },
     sshexec: {
       reload_site: {
-        command: `pm2 reload all`,
+        command: `cd /opt/sites/rewards/webapi
+                  npm install
+                  pm2 reload all`,
         options: {
           host: '<%= credential.host %>',
           username: '<%= credential.username %>',
